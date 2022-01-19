@@ -14,3 +14,12 @@ $font: "Roboto", sans-serif;
 li {
   list-style: none;
 }
+
+a {
+  text-decoration: none;
+}
+
+img {
+  object-fit: cover;
+  object-position: center;
+}

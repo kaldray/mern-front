@@ -3,6 +3,27 @@
 body {
   width: 100%;
   height: 100vh;
+  box-sizing: border-box;
+  background-color: $gainsboro;
+}
+
+nav {
+  display: flex;
+  justify-content: center;
+  background-color: $jet;
+  height: 50px;
+  align-items: center;
+  font-size: 1.2rem;
+  gap: 20px;
+  margin-bottom: 3rem;
+  a {
+    color: $gainsboro;
+    font-family: $font;
+  }
+}
+
+.active {
+  text-decoration: underline;
 }
 
 h1 {
@@ -46,30 +67,99 @@ button {
   font-family: $font;
 }
 
-.todo {
-  width: 100%;
-  flex-flow: wrap;
+.home {
   display: flex;
-}
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3rem;
+  h1 {
+    font-size: 1.5em;
+    font-family: $font;
+    margin: 1rem;
+  }
+  .movie-container {
+    border: 1px solid $black;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: auto;
+    row-gap: 3rem;
+  }
+  .movie-image {
+    max-height: 50%;
+    max-width: 100%;
+  }
 
-ul {
-  display: flex;
-  flex-flow: wrap;
-  li {
-    margin: 20px;
-    word-break: break-all;
-    background-color: $jet;
-    padding: 10px;
-    border-radius: 5px;
-    color: white;
+  .movie {
     display: flex;
+    align-items: center;
+    justify-content: center;
     flex-direction: column;
+    max-height: 400px;
+    min-width: 200px;
+    max-width: 300px;
+    grid-column: 1 / span 12;
+    border-radius: 50px;
+    background: #d9d9d9;
+    box-shadow: -10px -10px 20px #b8b8b8, 10px 10px 20px #ebebeb;
+  }
+  p {
+    font-size: 1rem;
+    color: black;
+    text-align: center;
+    font-family: $font;
+    margin: 10px;
+    line-break: strict;
+  }
+  .changes {
+    height: 50px;
+    width: 50px;
+  }
+  .delete {
+    width: 40px;
+    height: 40px;
+    position: relative;
+    &::after,
+    &::before {
+      content: "";
+      position: absolute;
+      width: 18px;
+      height: 4px;
+      background-color: black;
+      border-radius: 2px;
+      top: 16px;
+    }
+
+    &::before {
+      -webkit-transform: rotate(45deg);
+      -moz-transform: rotate(45deg);
+      transform: rotate(45deg);
+      left: 2px;
+    }
+    &::after {
+      -webkit-transform: rotate(-45deg);
+      -moz-transform: rotate(-45deg);
+      transform: rotate(-45deg);
+      right: 20px;
+    }
   }
 }
 
-.delete {
-  align-self: flex-end;
-}
-
 @media screen and (min-width: 768px) {
+  .home {
+    .movie-container {
+      width: 80%;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      column-gap: 3rem;
+      row-gap: 2rem;
+    }
+    .movie {
+      flex-grow: 1;
+      min-width: 300px;
+      max-width: 300px;
+    }
+  }
 }

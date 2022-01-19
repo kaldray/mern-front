@@ -1,17 +1,16 @@
-import { nanoid } from "nanoid";
 import React, { useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import Nav from "../components/Navigation";
 
 const AddMovies = () => {
-  const [todos, setTodo] = useState([]);
   const [movies, setMovies] = useState({});
-
   const title = useRef();
   const description = useRef();
   const url = useRef();
   const date = useRef();
+  let navigate = useNavigate();
 
-  const addTodos = (event) => {
-    event.preventDefault();
+  const sendDataToDatabase = () => {
     if (
       title.current.value === "" ||
       description.current.value === "" ||
@@ -20,17 +19,16 @@ const AddMovies = () => {
     ) {
       return;
     }
-    const allTodos = [...todos, title.current.value];
-    setTodo(allTodos);
     title.current.value = "";
     description.current.value = "";
     url.current.value = "";
     date.current.value = "";
 
-    sendDataToDatabase();
+    fetchDataToDatabase();
+    navigate("/");
   };
 
-  const sendDataToDatabase = () => {
+  const fetchDataToDatabase = () => {
     fetch("http://localhost:8080/movies", {
       method: "POST",
       headers: {
@@ -40,11 +38,10 @@ const AddMovies = () => {
     });
   };
 
-  const exportMoviestoDatabase = (event) => {
-    event.preventDefault();
+  const storeDataMovieInState = () => {
     const allMovie = {
       title: title.current.value,
-      descriptiton: description.current.value,
+      description: description.current.value,
       imageUrl: url.current.value,
       realseDate: DatetoTimestamp(date.current.value),
     };
@@ -59,53 +56,48 @@ const AddMovies = () => {
   };
 
   return (
-    <div className="container">
-      <h1>Todo List</h1>
-      <form
-        method="POST"
-        action="http://localhost:8080/movies"
-        onChange={exportMoviestoDatabase}
-        onSubmit={addTodos}
-      >
-        <label htmlFor="title">Title</label>
-        <input
-          type="text"
-          name="title"
-          placeholder="Tape something here"
-          ref={title}
-        />
-        <label htmlFor="description">Description</label>
-        <input
-          type="text"
-          name="description"
-          placeholder="Tape something here"
-          ref={description}
-        />
-        <label htmlFor="image">Affiche</label>
-        <input
-          ref={url}
-          type="url"
-          name="image"
-          placeholder="Tape something here"
-        />
-        <label htmlFor="title">Date de Sortie</label>
-        <input
-          ref={date}
-          type="date"
-          name="title"
-          placeholder="Tape something here"
-        />
-        <button type="submit">Submit</button>
-      </form>
-      <div className="todo">
-        <ul>
-          {" "}
-          {todos.map((todo) => (
-            <li key={nanoid()}> {todo} </li>
-          ))}
-        </ul>
+    <>
+      <Nav></Nav>
+      <div className="container">
+        <h1>Todo List</h1>
+        <form
+          method="POST"
+          action="http://localhost:8080/movies"
+          onChange={storeDataMovieInState}
+          onSubmit={sendDataToDatabase}
+        >
+          <label htmlFor="title">Title</label>
+          <input
+            type="text"
+            name="title"
+            placeholder="Tape something here"
+            ref={title}
+          />
+          <label htmlFor="description">Description</label>
+          <input
+            type="text"
+            name="description"
+            placeholder="Tape something here"
+            ref={description}
+          />
+          <label htmlFor="image">Affiche</label>
+          <input
+            ref={url}
+            type="url"
+            name="image"
+            placeholder="Tape something here"
+          />
+          <label htmlFor="title">Date de Sortie</label>
+          <input
+            ref={date}
+            type="date"
+            name="title"
+            placeholder="Tape something here"
+          />
+          <button type="submit">Submit</button>
+        </form>
       </div>
-    </div>
+    </>
   );
 };
 
